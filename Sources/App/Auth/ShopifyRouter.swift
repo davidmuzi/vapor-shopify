@@ -25,7 +25,7 @@ public class ShopifyRouter: FederatedServiceRouter {
 	}
 	
 	/// The route thats called to initiate the auth flow
-	/// ex. https://78d55c18.ngrok.io/login-shopify?shop=davidmuzi.myshopify.com
+	/// ex. https://shop-staging.vapor.cloud/login-shopify?shop=davidmuzi.myshopify.com
 	///
 	/// - Parameter request: The request from the browser.
 	/// - Returns: A response that, by default, redirects the user to `authURL`.
