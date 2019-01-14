@@ -1,19 +1,11 @@
 //
-//  ProductsAPI.swift
+//  ShopifyAPI+Vapor.swift
+//  App
 //
-//  Created by David Muzi on 2019-01-01.
+//  Created by David Muzi on 2019-01-10.
 //
 
-import Foundation
 import Vapor
-
-protocol ShopifyResource {
-	static var path: String { get }
-}
-
-extension Array: ShopifyResource where Element: ShopifyResource {
-	static var path: String { return Element.path }
-}
 
 class ShopifyAPI {
 	private let session: Session
@@ -34,9 +26,8 @@ class ShopifyAPI {
 			.client()
 			.get(url, headers: headers)
 			.map(to: R.self) { response in
-			
-			guard response.http.status == .ok else { throw Abort(.internalServerError) }
-			return try response.content.syncDecode(R.self)
+				guard response.http.status == .ok else { throw Abort(.internalServerError) }
+				return try response.content.syncDecode(R.self)
 		}
 	}
 }

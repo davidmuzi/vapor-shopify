@@ -10,11 +10,7 @@ import Imperial
 import Authentication
 
 struct ImperialController {
-	
-	func processLogin(request: Request, token: String) throws -> Future<ResponseEncodable> {
-		return request.future(request.redirect(to: "/products"))
-	}
-	
+
 }
 
 extension ImperialController: RouteCollection {
