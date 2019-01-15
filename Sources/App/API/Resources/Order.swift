@@ -6,8 +6,7 @@
 //
 import Foundation
 
-// Orders
-struct ShopifyOrder: Codable {
+struct Order: Codable {
 	let email: String
 	let totalPrice: String
 	let id: Int
@@ -19,14 +18,14 @@ struct ShopifyOrder: Codable {
 	}
 }
 
-struct ShopifyOrders: Codable {
-	let orders: [ShopifyOrder]
+struct Orders: Codable {
+	let orders: [Order]
 }
 
-extension ShopifyOrders: ShopifyResource {
+extension Orders: ShopifyResource {
 	static var path: String { return "orders.json" }
 }
 
-extension ShopifyOrders: ResourceContainer {
-	var contents: [ShopifyOrder] { return orders }
+extension Orders: ResourceContainer {
+	var contents: [Order] { return orders }
 }
