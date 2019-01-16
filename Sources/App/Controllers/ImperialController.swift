@@ -10,7 +10,7 @@ import Imperial
 import Authentication
 
 struct ImperialController {
-
+	
 }
 
 extension ImperialController: RouteCollection {

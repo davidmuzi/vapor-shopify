@@ -7,13 +7,15 @@ public func routes(_ router: Router) throws {
         return "It works!"
     }
 	
-	router.get("products") { request -> Future<[Product]> in
+	router.get("products.json") { request -> Future<[Product]> in
 		try Products.get(request: request)
 	}
 	
-	router.get("orders") { request -> Future<[Order]> in
+	router.get("orders.json") { request -> Future<[Order]> in
 		try Orders.get(request: request)
 	}
+	
+	router.get("products", use: ProductsController().showProducts)
 	
 	try router.register(collection: ImperialController())
 }

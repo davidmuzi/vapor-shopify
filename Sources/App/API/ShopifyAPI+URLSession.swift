@@ -39,7 +39,7 @@ class ShopifySessionAPI {
 		request.httpMethod = "POST"
 		
 		let encoder = JSONEncoder()
-		encoder.dateEncodingStrategy = .iso8601
+		//encoder.dateEncodingStrategy = .iso8601
 		
 		request.httpBody = try encoder.encode([R.identifier: resource])
 		
