@@ -14,7 +14,8 @@ public func routes(_ router: Router) throws {
 		let com = URLComponents(url: req.http.url, resolvingAgainstBaseURL: false)!
 		let shop = com.queryItems?.first{ $0.name == "shop"}?.value
 		let apiKey = try ShopifyAuth().clientID
-		
+		guard let callbackURL = Environment.get("SHOPIFY_CALLBACK_URL") else { fatalError("Callback not set") }
+
 		if (try? req.accessToken()) != nil {
 			let redirect = req.redirect(to: "products")
 			return req.future(AnyResponse(redirect))
@@ -24,7 +25,7 @@ public func routes(_ router: Router) throws {
 		<html>
 		<script src="https://unpkg.com/@shopify/app-bridge"></script>
 		<script src="/scripts/redirect.js"></script>
-		<script>redirect("\(shop!)", "\(apiKey)")</script>
+		<script>redirect("\(shop!)", "\(apiKey)", "\(callbackURL)")</script>
 		</html>
 		"""
 		
