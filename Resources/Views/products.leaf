@@ -2,15 +2,24 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 				
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<title>Products</title>
+				<!-- Bootstrap CSS -->
+				<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+					<title>Products</title>
+					
+					<script src="https://unpkg.com/@shopify/app-bridge"></script>
+					<script src="/scripts/bridge.js"></script>
+
 	</head>
+	
+	<script>
+		init("#(domain)", "#(apiKey)")
+	</script>
+
 	<div class="container mt-3">
 		<table class="table table-bordered table-hover">
-			<thead class="thead-light"> 
+			<thead class="thead-light">
 				<tr>
 					<th>
 						Product
@@ -20,7 +29,8 @@
 					</th>
 				</tr>
 				<tbody>
-					#for(product in products) {
+					#if(products.products) {
+					#for(product in products.products) {
 					<tr>
 						<td>
 							#(product.title)
@@ -29,6 +39,8 @@
 							#(product.id)
 						</td>
 					</tr>
+					}
+					
 					}
 				</tbody>
 			</thead>
