@@ -6,6 +6,7 @@
 //
 
 import Vapor
+import Imperial
 
 struct ProductsController {
 	
@@ -22,10 +23,12 @@ struct ProductsController {
 				struct Ctx: Content {
 					let products: Products
 					let domain: String
+					let apiKey: String
 				}
 				
 				let domain = try req.session().shopDomain()
-				let ctx = Ctx(products: products, domain: domain)
+				let apiKey = try ShopifyAuth().clientID
+				let ctx = Ctx(products: products, domain: domain, apiKey: apiKey)
 				return try req.view().render("products", ctx)
 			}
 	}

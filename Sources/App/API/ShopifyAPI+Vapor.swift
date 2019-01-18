@@ -13,7 +13,7 @@ class ShopifyAPI {
 	
 	init(session: Session) throws {
 		self.session = session
-		let domain = try session.shopDomain()
+		let domain = session["shop_domain"]!
 		self.host = URL(string: "https://\(domain)/admin/")!
 	}
 }
