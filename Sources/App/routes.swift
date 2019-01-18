@@ -34,8 +34,8 @@ public func routes(_ router: Router) throws {
 	}
 	
 	router.get("start") { req -> Future<Response> in
-		
-		guard (try? req.session().shopDomain()) != nil else {
+		let session = try req.session()
+		guard session["shop_domain"] != nil else {
 			let com = URLComponents(url: req.http.url, resolvingAgainstBaseURL: false)!
 			let shop = com.queryItems?.first{ $0.name == "shop"}?.value
 			

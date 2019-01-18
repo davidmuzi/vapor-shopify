@@ -26,7 +26,7 @@ struct ProductsController {
 					let apiKey: String
 				}
 				
-				let domain = try req.session().shopDomain()
+				let domain = try req.session()["shop_domain"]!
 				let apiKey = try ShopifyAuth().clientID
 				let ctx = Ctx(products: products, domain: domain, apiKey: apiKey)
 				return try req.view().render("products", ctx)
