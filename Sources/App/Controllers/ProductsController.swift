@@ -9,16 +9,17 @@ import Vapor
 import Imperial
 
 struct ProductsController {
-	
+
 	func dummy(_ req: Request) throws -> Future<View> {
 		return try req.view().render("products", ["domain": "davidmuzi.myshopify.com"])
 	}
 	
-	func showProducts(_ req: Request) throws -> Future<View> {
+	func showProducts(_ req: Request) throws -> Future<AnyResponse> {
+		
 		let api = try ShopifyAPI(session: req.session())
 		
 		return try api.get(resource: Products.self, request: req)
-			.flatMap(to: View.self) { products in
+			.map(to: AnyResponse.self) { products in
 				
 				struct Ctx: Content {
 					let products: Products
@@ -29,7 +30,25 @@ struct ProductsController {
 				let domain = try req.session()["shop_domain"]!
 				let apiKey = try ShopifyAuth().clientID
 				let ctx = Ctx(products: products, domain: domain, apiKey: apiKey)
-				return try req.view().render("products", ctx)
+				return try AnyResponse(req.view().render("products", ctx))
 			}
+	}
+}
+
+extension ProductsController: RouteCollection {
+	func boot(router: Router) throws {
+		router.get("products.json") { request -> Future<[Product]> in
+			try Products.get(request: request)
+		}
+		
+		router.get("orders.json") { request -> Future<[Order]> in
+			try Orders.get(request: request)
+		}
+		
+		router.get("products", use: showProducts)
+		router.get("dummy", use: dummy)
+		
+		let authedRouter = router.grouped(AuthenticationMiddleware())
+		authedRouter.get("products", use: showProducts)
 	}
 }

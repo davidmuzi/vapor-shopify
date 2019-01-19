@@ -28,7 +28,7 @@ extension ShopifyAPI {
 			.client()
 			.get(url, headers: try request.shopifyHeader())
 			.map(to: R.self) { response in
-				guard response.http.status == .ok else { throw Abort(.internalServerError) }
+				guard response.http.status == .ok else { throw Abort(response.http.status) }
 				return try response.content.syncDecode(R.self)
 		}
 	}
