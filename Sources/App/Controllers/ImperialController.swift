@@ -6,8 +6,8 @@
 //
 
 import Vapor
-import Imperial
-import Authentication
+//import Imperial
+//import Authentication
 
 class ImperialController {
 	var shopifyRouter: Shopify!
@@ -15,7 +15,6 @@ class ImperialController {
 
 extension ImperialController {
 
-	
 	// This uses App Bridge to escape the iFrame and redirect to Shopify for OAuth
 	func escape(_ req: Request) throws -> Future<AnyResponse> {
 		
