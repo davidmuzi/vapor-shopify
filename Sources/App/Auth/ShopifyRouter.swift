@@ -118,3 +118,25 @@ public class ShopifyRouter: FederatedServiceRouter {
         return "https://\(shop)/admin/oauth/access_token"
     }
 }
+
+extension Session {
+	
+	enum Keys {
+		static let token = "access_token"
+	}
+	
+	/// Gets the access token from the session.
+	///
+	/// - Returns: The access token stored with the `access_token` key.
+	/// - Throws: `Abort.unauthorized` if no access token exists.m
+	public func accessToken()throws -> String {
+		guard let token = self[Keys.token] else {
+			throw Abort(.unauthorized, reason: "User currently not authenticated")
+		}
+		return token
+	}
+	
+	public func setAccessToken(_ token: String) {
+		self[Keys.token] = token
+	}
+}
