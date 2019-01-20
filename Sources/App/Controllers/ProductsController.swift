@@ -18,7 +18,7 @@ struct ProductsController {
 	func showProducts(_ req: Request) throws -> Future<AnyResponse> {
 		
 		let logger = try req.make(Logger.self)
-		logger.info("fetching products: \(request.http.url.absoluteURL)")
+		logger.info("fetching products: \(req.http.url.absoluteURL)")
 		
 		let api = try ShopifyAPI(session: req.session())
 		logger.info("got api")
