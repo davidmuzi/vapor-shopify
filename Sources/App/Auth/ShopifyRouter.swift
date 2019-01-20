@@ -1,5 +1,6 @@
 import Vapor
 import Imperial
+import Logging
 
 public class ShopifyRouter: FederatedServiceRouter {
     
@@ -41,7 +42,10 @@ public class ShopifyRouter: FederatedServiceRouter {
     ///
     /// - Parameters: request: The request for the route this method is called in.
     public func fetchToken(from request: Request) throws -> EventLoopFuture<String> {
-        
+		
+		let logger = try request.make(Logger.self)
+		logger.info("fetching token: \(request.http.url.absoluteURL)")
+		
         // Extract the parameters to verify
         guard let code = request.query[String.self, at: "code"],
             let shop = request.query[String.self, at: "shop"],
@@ -50,6 +54,8 @@ public class ShopifyRouter: FederatedServiceRouter {
         // Verify the request
         if let state = request.query[String.self, at: "state"] {
             let nonce = try request.session().nonce()
+			logger.info("nonce: \(nonce)")
+
             guard state == nonce else { throw Abort(.badRequest) }
         }
         guard URL(string: shop)?.isValidShopifyDomain() == true else { throw Abort(.badRequest) }

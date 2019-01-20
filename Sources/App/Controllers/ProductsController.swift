@@ -7,6 +7,7 @@
 
 import Vapor
 //import Imperial
+import Logging
 
 struct ProductsController {
 
@@ -16,8 +17,12 @@ struct ProductsController {
 	
 	func showProducts(_ req: Request) throws -> Future<AnyResponse> {
 		
-		let api = try ShopifyAPI(session: req.session())
+		let logger = try req.make(Logger.self)
+		logger.info("fetching products: \(request.http.url.absoluteURL)")
 		
+		let api = try ShopifyAPI(session: req.session())
+		logger.info("got api")
+
 		return try api.get(resource: Products.self, request: req)
 			.map(to: AnyResponse.self) { products in
 				

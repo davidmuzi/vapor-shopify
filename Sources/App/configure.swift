@@ -1,11 +1,13 @@
 import FluentSQLite
 import Vapor
 import Leaf
+import Logging
 
 /// Called before your application initializes.
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     /// Register providers first
     try services.register(FluentSQLiteProvider())
+	services.register(PrintLogger(), as: Logger.self)
 
     /// Register routes to the router
     let router = EngineRouter.default()
@@ -36,4 +38,6 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
 	config.prefer(MemoryKeyedCache.self, for: KeyedCache.self)
 	
 	config.prefer(LeafRenderer.self, for: ViewRenderer.self)
+	
+
 }
