@@ -24,6 +24,6 @@ COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
 COPY --from=builder /app/Public ./Public
 # Uncommand the next line if you are using Leaf
-#COPY --from=builder /app/Resources ./Resources
+COPY --from=builder /app/Resources ./Resources
 
 ENTRYPOINT ./Run serve --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
