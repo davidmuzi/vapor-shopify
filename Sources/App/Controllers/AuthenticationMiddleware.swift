@@ -14,7 +14,7 @@ class AuthenticationMiddleware: Middleware {
 			let com = URLComponents(url: request.http.url, resolvingAgainstBaseURL: false)!
 			let shop = com.queryItems!.first{ $0.name == "shop"}!.value!
 			
-			return request.future(request.redirect(to: "/escape?shop=\(shop)"))
+			return request.future(request.redirect(to: "/begin_auth?shop=\(shop)"))
 		}
 		
 		return try next.respond(to: request)
