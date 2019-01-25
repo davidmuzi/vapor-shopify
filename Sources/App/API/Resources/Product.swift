@@ -23,3 +23,21 @@ extension Products: ShopifyResource {
 extension Products: ResourceContainer {
 	var contents: [Product] { return products }
 }
+
+extension Products: Queryable {
+		
+	enum Query: QueryItemConvertable {
+		case limit(Int)
+		case page(Int)
+		
+		func queryItem() -> URLQueryItem {
+			switch self {
+			case .limit(let lim):
+				return URLQueryItem(name: "limit", value: "\(lim)")
+				
+			case .page(let page):
+				return URLQueryItem(name: "page", value: "\(page)")
+			}
+		}
+	}
+}

@@ -10,10 +10,11 @@ import XCTest
 
 class AppTests: XCTestCase {
 
-	let session = ShopifySessionAPI(token: "TOKEN", domain: "DOMAIN")
+	let token = ProcessInfo.processInfo.environment["token"]!
+	var session: ShopifyAPI.URLSession!
 	
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+		session = ShopifyAPI.URLSession(token: token, domain: "davidmuzi.myshopify.com")
     }
 
     override func tearDown() {
@@ -34,6 +35,36 @@ class AppTests: XCTestCase {
 
     }
 	
+	func testQueryItem() {
+		let items = QueryBuilder<Products>()
+			.addQuery(.limit(5))
+			.addQuery(.page(2))
+		
+		let expected = expectation(description: "")
+		
+		session.get(query: items) { (result) in
+			XCTAssertEqual(5, result?.contents.count)
+			expected.fulfill()
+		}
+		
+		waitForExpectations(timeout: 5, handler: nil)
+	}
+	
+	func testOrderQueryItem() {
+		let items = QueryBuilder<Orders>()
+			.addQuery(.limit(5))
+			.addQuery(.page(2))
+		
+		let expected = expectation(description: "")
+		
+		session.get(query: items) { (result) in
+			XCTAssertEqual(5, result?.contents.count)
+			expected.fulfill()
+		}
+		
+		waitForExpectations(timeout: 5, handler: nil)
+	}
+	
 	func testMarketingEvent() {
 		let expected = expectation(description: "")
 
@@ -47,7 +78,7 @@ class AppTests: XCTestCase {
 		)
 		
 		try! session.post(resource: marketingEvent) { (resource) in
-			XCTAssertEqual(resource?.id, 9)
+			XCTAssertNotEqual(resource?.id, 0)
 			expected.fulfill()
 		}
 		

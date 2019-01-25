@@ -20,7 +20,7 @@ struct ProductsController {
 		let logger = try req.make(Logger.self)
 		logger.info("fetching products: \(req.http.url.absoluteURL)")
 		
-		let api = try ShopifyAPI(session: req.session())
+		let api = try ShopifyAPI.Vapor(session: req.session())
 		logger.info("got api")
 
 		return try api.get(resource: Products.self, request: req)

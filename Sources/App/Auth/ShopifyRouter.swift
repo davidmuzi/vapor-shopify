@@ -54,7 +54,6 @@ public class ShopifyRouter: FederatedServiceRouter {
         // Verify the request
         if let state = request.query[String.self, at: "state"] {
             let nonce = try request.session().nonce()
-			logger.info("nonce: \(nonce)")
 
             guard state == nonce else { throw Abort(.badRequest) }
         }
