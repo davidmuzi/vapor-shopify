@@ -16,7 +16,7 @@ class ImperialController {
 extension ImperialController {
 	
 	// 1. Called from iFrame will redirect to app as main frame using App Bridge
-	func begin_auth(_ req: Request) throws -> Future<HTTPResponse> {
+	func begin_auth(_ req: Request) throws -> Future<View> {
 		
 		print("1. Redirecting to self via App Bridge to escape iFrame")
 		
@@ -34,9 +34,9 @@ extension ImperialController {
 		</html>
 		"""
 		
-		var response = HTTPResponse(status: .ok, body: html)
-		response.contentType = .xml
-		return req.future(response)
+		let promise: EventLoopPromise<View> = req.eventLoop.newPromise()
+		promise.succeed(result: View(data: html.data(using: .utf8)!))
+		return promise.futureResult
 	}
 	
 	// 2. Called in main frame, initiates OAuth (which has write access to cookies) via a window redirect
