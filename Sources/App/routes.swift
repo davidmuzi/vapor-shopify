@@ -8,5 +8,13 @@ public func routes(_ router: Router) throws {
     }
 
 	try router.register(collection: ProductsController())
-	try router.register(collection: ImperialController())
+	let imperial = ImperialController()
+	try router.register(collection: imperial)
+	
+	
+	let appGroup = router.grouped("app")
+	let authController = OAuthController()
+	authController.imperial = imperial
+	try appGroup.register(collection: authController)
+
 }
