@@ -8,10 +8,6 @@ struct MarketingEvents: Codable {
 	let marketingEvents: [MarketingEvent]
 }
 
-extension MarketingEvents: ResourceContainer {
-	var contents: [MarketingEvent] { return marketingEvents }
-}
-
 struct MarketingEvent: Codable {
 	enum EventType: String, Codable {
 		case ad
@@ -49,11 +45,13 @@ struct MarketingEvent: Codable {
 	let startedAt: Date
 }
 
-extension MarketingEvents: ShopifyResource {
-	static var path: String { return "marketing_events.json" }
+extension MarketingEvents: ResourceContainer {
+	var contents: [MarketingEvent] { return marketingEvents }
 }
 
 extension MarketingEvent: ShopifyCreatableResource {
-	static var path: String { return "marketing_events.json" }
+	static var path: String { return "marketing_events" }
 	static var identifier = "marketing_event"
 }
+
+extension MarketingEvent: ShopifyResource {}

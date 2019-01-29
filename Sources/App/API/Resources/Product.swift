@@ -8,16 +8,16 @@
 import Foundation
 
 struct Product: Codable {
+	var id: Int?
 	let title: String
-	let id: Int
+}
+
+extension Product: ShopifyResource {
+	static var path: String { return "products" }
 }
 
 struct Products: Codable {
 	let products: [Product]
-}
-
-extension Products: ShopifyResource {
-	static var path: String { return "products.json" }
 }
 
 extension Products: ResourceContainer {

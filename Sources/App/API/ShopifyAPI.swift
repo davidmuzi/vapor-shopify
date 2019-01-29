@@ -9,23 +9,23 @@ import Foundation
 enum ShopifyAPI {}
 
 protocol ShopifyResource {
+	var id: Int? { get }
 	static var path: String { get }
 }
 
-protocol ShopifyCreatableResource: ShopifyResource {
-	static var identifier: String { get }
-}
-
-extension Array: ShopifyResource where Element: ShopifyResource {
-	static var path: String { return Element.path }
-}
-
 protocol ResourceContainer {
-	associatedtype Resource
+	associatedtype Resource: ShopifyResource
 	var contents: [Resource] { get }
 }
 
+protocol ShopifyCreatableResource {
+	static var path: String { get }
+	static var identifier: String { get }
+}
+
 typealias CodableResource = ShopifyResource & Codable
+
+// MARK: - Query Support
 
 protocol Queryable {
 	associatedtype Query: QueryItemConvertable

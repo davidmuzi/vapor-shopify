@@ -7,9 +7,10 @@
 import Foundation
 
 struct Order: Codable {
+	
 	let email: String
 	let totalPrice: String
-	let id: Int
+	let id: Int?
 	
 	enum CodingKeys: String, CodingKey {
 		case totalPrice = "total_price"
@@ -18,12 +19,12 @@ struct Order: Codable {
 	}
 }
 
-struct Orders: Codable {
-	let orders: [Order]
+extension Order: ShopifyResource {
+	static var path: String { return "orders" }
 }
 
-extension Orders: ShopifyResource {
-	static var path: String { return "orders.json" }
+struct Orders: Codable {
+	let orders: [Order]
 }
 
 extension Orders: ResourceContainer {

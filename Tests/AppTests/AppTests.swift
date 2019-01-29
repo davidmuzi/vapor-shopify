@@ -85,5 +85,54 @@ class AppTests: XCTestCase {
 		waitForExpectations(timeout: 5, handler: nil)
 
 	}
+	
+	func testCreateWebhook() {
+		let expected = expectation(description: "")
 
+		let webhook = Webhook(topic: "customers/update", address: "https://www.ngrok.com/webhook/customer_update5", id: nil)
+		
+		try! session.post(resource: webhook, callback: { (resource) in
+			XCTAssertNotEqual(resource?.id, 0)
+			expected.fulfill()
+		})
+		
+		waitForExpectations(timeout: 15, handler: nil)
+
+	}
+
+	func testGetWebhooks() {
+		let items = QueryBuilder<Webhooks>()
+			.addQuery(.limit(10))
+		
+		let expected = expectation(description: "")
+		
+		session.get(query: items) { (result) in
+			XCTAssertEqual(1, result?.contents.count)
+			expected.fulfill()
+		}
+		
+		waitForExpectations(timeout: 5, handler: nil)
+	}
+	
+	func testDeleteWebHook() {
+		let items = QueryBuilder<Webhooks>()
+			.addQuery(.limit(11))
+		
+		let expected = expectation(description: "")
+		
+		session.get(query: items) { (result) in
+			
+			let hook: Webhook = result!.contents.first!
+
+			try! self.session.delete(resource: hook, callback: { error in
+
+				XCTAssertNil(error)
+				expected.fulfill()
+
+			})
+			
+		}
+		
+		waitForExpectations(timeout: 15, handler: nil)
+	}
 }

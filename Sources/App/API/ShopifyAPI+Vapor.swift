@@ -27,7 +27,7 @@ extension Request {
 	}
 }
 
-extension ResourceContainer where Self: CodableResource {
+extension ResourceContainer where Resource: CodableResource, Self: Decodable {
 	static func get(request: Request) throws -> Future<[Resource]> {
 		let api = try ShopifyAPI.Vapor(session: request.session())
 		return try api.get(resource: self, request: request).map { return $0.contents }
@@ -36,9 +36,10 @@ extension ResourceContainer where Self: CodableResource {
 
 extension ShopifyAPI.Vapor {
 	
-	func get<R: ShopifyResource & Decodable>(resource: R.Type, request: Request) throws -> Future<R> {
+	func get<R: ResourceContainer & Decodable>(resource: R.Type, request: Request) throws -> Future<R> {
 		
-		let url = host.appendingPathComponent(resource.path)
+		let url = host.appendingPathComponent(R.Resource.path)
+			.appendingPathExtension("json")
 		
 		return try request
 			.client()
@@ -52,6 +53,7 @@ extension ShopifyAPI.Vapor {
 	func post<R: ShopifyCreatableResource & Content>(resource: R, request: Request) throws -> Future<R> {
 		
 		let url = host.appendingPathComponent(R.path)
+			.appendingPathExtension("json")
 		
 		return try request
 			.client()
