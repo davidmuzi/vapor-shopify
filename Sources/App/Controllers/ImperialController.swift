@@ -6,6 +6,7 @@
 //
 
 import Vapor
+import Imperial
 
 class ImperialController {
 	var shopifyRouter: Shopify!

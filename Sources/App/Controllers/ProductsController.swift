@@ -6,7 +6,7 @@
 //
 
 import Vapor
-//import Imperial
+import Imperial
 import Logging
 
 struct ProductsController {
